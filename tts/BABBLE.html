@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>babble</title>
+	<script src="../babble.js"></script>
+	<script src="mespeak.js"></script>
+	<script src="musics.js"></script>
+</head>
+<body>
+	<h1>babble.coffee</h1> ― <h2>TTS</h2>
+	<br/>
+	
+	<canvas id="MUSIX" width="600" height="600"></canvas>
+	
+	<div id="LOG"></div>
+	
+	<script>
+		meSpeak.loadConfig("mespeak_config.json");
+		meSpeak.loadVoice("voices/en/en.json");
+		
+		function loadVoice(id) {
+			var fname="voices/"+id+".json";
+			meSpeak.loadVoice(fname, voiceLoaded);
+		}
+	
+		function voiceLoaded(success, message) {
+			if (success) {
+				alert("Voice loaded: "+message+".");
+			} else {
+				alert("Failed to load a voice: "+message);
+			}
+		}
+		
+		var variants = [
+			"","f1","f2","f3","f4","f5",
+			"m1","m2","m3","m4","m5","m6",
+			"croak","whisper","whisperf",
+			"klatt","klatt2","klatt3",
+		];
+		var cool_variants = [
+			"croak","whisper","whisperf",
+			"klatt","klatt2","klatt3",
+		];
+		
+		function speak(){
+			var speed = 170;
+			var amplitude = 100;
+			var pitch = 50;
+			var wordgap = 0;
+			var lang = "en/en";
+			var text = babble.sentence();
+			var variant = choose(variants);
+			if(Math.random()<0.3){
+				variant = choose(cool_variants);
+			}
+			
+			// compile a function to speak with given params for later use
+			var speakNow = function() {
+				meSpeak.speak(text, {
+					amplitude: amplitude,
+					wordgap: wordgap,
+					pitch: pitch,
+					speed: speed,
+					variant: variant
+				});
+			};
+			
+			// check for any voice specified by the params (other than the default)
+			if (lang && lang!="prev. lang") {
+				meSpeak.loadVoice('voices/'+lang+'.json', function(success, message) {
+					if (success) {
+						speakNow();
+					} else {
+						console.error('Failed to load requested lang/voice: '+message);
+					}
+				});
+			}
+			// standard voice: speak (deferred until config is loaded)
+			//else? if (useDefaultVoice) speakNow();
+			
+			LOG.appendChild(document.createElement("br"));
+			LOG.appendChild(document.createTextNode(text));
+		}
+		
+		var m = new Musics();
+		m.getMusic = function(){
+			speak();
+			//return "abcbefgf";
+			var s="a",y="",sf="abcdef   ",replacements=[];
+			for(var i=0;i<35;i++){
+				var s1="",s2="";
+				for(var j=0;j<Math.random()*3;j++){
+					s1+=sf[Math.floor(Math.random()*sf.length)];
+				}
+				for(var j=0;j<Math.random()*4;j++){
+					s2+=sf[Math.floor(Math.random()*sf.length)];
+				}
+				replacements.push({"from":s1,"to":s2});
+			}
+			for(var i=0;i<5;i++){
+				for(var j in replacements){
+					s=s.replace(replacements[j].from,replacements[j].to);
+				}
+			};
+			console.log(s);
+			return s;
+		};
+		m.drawTo(MUSIX);
+		onclick = function(){
+			if(m.isPlaying()){
+				m.pause();
+				document.body.style.backgroundColor = "#FFF";
+			}else{
+				m.play();
+				document.body.style.backgroundColor = "#FEE";
+			}
+		};
+		
+		//
+		function choose(values) {
+			return values[(Math.random() * values.length) | 0];
+		};
+	</script>
+	<style>
+		h2 {
+			color: #888;
+		}
+		h1, h2 {
+			display: inline;
+		}
+		* {
+			font-family: sans-serif;
+		}
+	</style>
+</body>
+</html>
