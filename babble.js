@@ -377,6 +377,30 @@
       }).call(this)).join("\n");
     };
 
+    Babble.prototype.text = function(max_length) {
+      var sentences, text, tries;
+      if (max_length < 5) {
+        return ".";
+      }
+      text = "";
+      sentences = [];
+      tries = 0;
+      while (text.length < max_length && tries < 50) {
+        tries += 1;
+        sentences.push(this.sentence());
+        text = sentences.join(" ");
+        while (text.length > max_length) {
+          sentences.pop();
+          text = sentences.join(" ");
+        }
+      }
+      if (text.length <= max_length) {
+        return text;
+      } else {
+        return this.common_noun();
+      }
+    };
+
     return Babble;
 
   })();

@@ -285,6 +285,27 @@
 			ucfirst(sentence)
 		
 		paragraph: -> (@sentence() for i in [0..6]).join("\n")
+		
+		text: (max_length)->
+			if max_length < 5
+				return "."
+			
+			text = ""
+			sentences = []
+			tries = 0
+			
+			while text.length < max_length and tries < 50
+				tries += 1
+				sentences.push @sentence()
+				text = sentences.join " "
+				while text.length > max_length
+					sentences.pop()
+					text = sentences.join " "
+			
+			if text.length <= max_length
+				text
+			else
+				@common_noun()
 	
 	if module?
 		module.exports = new Babble
