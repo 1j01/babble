@@ -311,13 +311,13 @@
     Babble.prototype.interrogative_sentence = function() {
       if (chance(10)) {
         return wh() + dun() + " " + this.subject() + " " + this.predicate();
-      } else if (chance(11)) {
+      } else if (chance(15)) {
         return choose(["what", "which"]) + (chance(10) ? " " + this._advj() : "") + " " + this.common_noun() + " " + this.predicate();
-      } else if (chance(11)) {
+      } else if (chance(21)) {
         return wh() + choose(["will", "won't", "will not"]) + " " + this.subject() + " " + this.predicate();
-      } else if (chance(11)) {
+      } else if (chance(26)) {
         return wh() + choose(["has", "have", "hasn't", "haven't"]) + " " + this.subject() + " " + this.predicate();
-      } else if (chance(11)) {
+      } else if (chance(32)) {
         return wh() + iz() + " " + this.subject() + " " + (chance(33) ? this._advj() : chance(50) ? this.prepositional_phrase() : this.predicate()) + "(~)";
       } else {
         return this.subject() + " " + this.predicate() + ", " + this.tag();

@@ -213,22 +213,22 @@
 		interrogative_sentence: ->
 			if chance 10
 				wh()+dun()+" "+@subject()+" "+@predicate()
-			else if chance 11
+			else if chance 15
 				choose(["what","which"])+
 				(if chance 10 then " "+@_advj() else "")+
 				" "+@common_noun()+
 				" "+@predicate()
 			#else if @chance 11
 			#	"which" [noun_phrase]+dun()+" "+@subject()+" "+@predicate()
-			else if chance 11
+			else if chance 21
 				wh()+
 				choose(["will","won't","will not"])+
 				" "+@subject()+" "+@predicate()
-			else if chance 11
+			else if chance 26
 				wh()+
 				choose(["has","have","hasn't","haven't"])+
 				" "+@subject()+" "+@predicate()
-			else if chance 11
+			else if chance 32
 				wh()+iz()+" "+@subject()+" "+
 				(
 					if chance 33
