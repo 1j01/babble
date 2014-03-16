@@ -124,9 +124,9 @@
       if (chance(30)) {
         return "the " + phrase;
       } else if (phrase.match(/^\s*[qwrtypsdfghjklzxcvbnm]/)) {
-        return "an " + phrase;
-      } else {
         return "a " + phrase;
+      } else {
+        return "an " + phrase;
       }
     };
 

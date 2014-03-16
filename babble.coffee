@@ -64,9 +64,9 @@
 			if chance 30
 				"the "+phrase
 			else if phrase.match /^\s*[qwrtypsdfghjklzxcvbnm]/
-				"an "+phrase
-			else
 				"a "+phrase
+			else
+				"an "+phrase
 		
 		predicate: ->
 			@_opt_adverbs_sp()+
