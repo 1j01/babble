@@ -28,10 +28,11 @@
 		
 		# rules
 		
-		opt_prepositional_phrases: ->
-			" {PF} "
-			# @TODO
-			# space words
+		_opt_prepositional_phrases: ->
+			if chance 10
+				" " + @prepositional_phrase()
+			else
+				""
 			
 		noun: ->
 			if chance 90
@@ -39,7 +40,7 @@
 			else
 				@proper_noun()
 			#spacing
-			#+ opt_prepositional_phrases()
+			#+ _opt_prepositional_phrases()?
 		
 		plural_noun: -> choose(plural_nouns)
 		common_noun: -> choose(common_nouns)
@@ -123,13 +124,13 @@
 			])
 
 		preposition: ->
-			if chance(10)#less plz
+			if chance 10 #less plz
 				"as #{@adjective()} as"
 			else
 				choose(prepositions)
 		
 		object: -> @noun_phrase()
-		noun_phrase: ->
+		noun_phrase: -> (
 			if chance 12.5
 				@proper_noun()
 			else if chance 14
@@ -146,7 +147,7 @@
 				@personal_possessive_adjective()+" "+@_advj_sp()+@noun()
 			else
 				@articlize(@common_noun_possessive()+" "+@_advj_sp()+@noun())
-		
+		) + @_opt_prepositional_phrases()
 		prepositional_phrase: -> @preposition()+" "+@object()
 		
 		subject: ->

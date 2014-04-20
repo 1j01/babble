@@ -32,8 +32,12 @@
 
     function Babble() {}
 
-    Babble.prototype.opt_prepositional_phrases = function() {
-      return " {PF} ";
+    Babble.prototype._opt_prepositional_phrases = function() {
+      if (chance(10)) {
+        return " " + this.prepositional_phrase();
+      } else {
+        return "";
+      }
     };
 
     Babble.prototype.noun = function() {
@@ -207,23 +211,7 @@
     };
 
     Babble.prototype.noun_phrase = function() {
-      if (chance(12.5)) {
-        return this.proper_noun();
-      } else if (chance(14)) {
-        return this.non_personal_pronoun();
-      } else if (chance(16)) {
-        return this.articlize(this._advj_sp() + this.common_noun());
-      } else if (chance(20)) {
-        return this._advj_sp() + this.plural_noun();
-      } else if (chance(25)) {
-        return this.prequantifier() + " " + this.plural_noun();
-      } else if (chance(33)) {
-        return this.proper_noun_possessive() + " " + this._advj_sp() + this.noun();
-      } else if (chance(50)) {
-        return this.personal_possessive_adjective() + " " + this._advj_sp() + this.noun();
-      } else {
-        return this.articlize(this.common_noun_possessive() + " " + this._advj_sp() + this.noun());
-      }
+      return (chance(12.5) ? this.proper_noun() : chance(14) ? this.non_personal_pronoun() : chance(16) ? this.articlize(this._advj_sp() + this.common_noun()) : chance(20) ? this._advj_sp() + this.plural_noun() : chance(25) ? this.prequantifier() + " " + this.plural_noun() : chance(33) ? this.proper_noun_possessive() + " " + this._advj_sp() + this.noun() : chance(50) ? this.personal_possessive_adjective() + " " + this._advj_sp() + this.noun() : this.articlize(this.common_noun_possessive() + " " + this._advj_sp() + this.noun())) + this._opt_prepositional_phrases();
     };
 
     Babble.prototype.prepositional_phrase = function() {
