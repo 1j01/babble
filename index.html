@@ -45,7 +45,7 @@
 					var is_text = code.match("max_length");
 					if(is_text){
 						if(max_length++ < 50){
-							j=1;
+							j = 1;
 						}
 					}
 					
@@ -60,7 +60,26 @@
 					}
 					$code.innerText = $code.textContent = code;
 					$output.innerHTML = eval(code);
+				}
+			}
+			for(var k in babble){
+				if(typeof babble[k] !== "function") continue;
+				
+				for(var j=0; j<5; j++){
+					var $p = document.createElement("p"); $gen.appendChild($p);
+					var $code__ = document.createElement("span"); $p.appendChild($code__);
+					var $code = document.createElement("code"); $code__.appendChild($code);
+					var $output = document.createElement("output"); $p.appendChild($output);
 					
+					$code__.appendChild(document.createTextNode(" => "));
+					if(k === "articlize"){
+						var word = ["zebra", "umbrella", "cat", "awesome cat", "etc."][j];
+						$code.innerText = $code.textContent = "babble."+k+"('"+word+"')";
+						$output.innerHTML = babble[k](word);
+					}else{
+						$code.innerText = $code.textContent = "babble."+k+"()";
+						$output.innerHTML = babble[k]();
+					}
 				}
 			}
 		</script>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Babble</title>
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+				border: 5px;
+				padding: 5px;
+				margin: 5px;
+				padding-bottom: 100px;
+				background: #FFF;
+				color: #000;
+				font-family: Helvetica, sans-serif;
+			}
+			h1 {
+				margin: 5px;
+			}
+			.found {
+				color: green;
+			}
+			.not-found {
+				color: red;
+			}
+			.totals {
+				
+			}
+			.award {
+				background: yellow;
+				border-radius: 5px;
+				margin: 5px;
+				box-shadow: 2px 2px 2px gold, 2px 2px 2px white inset;
+				color: #550;
+			}
+			.no-award {
+				background: yellow;
+				border-radius: 5px;
+				margin: 5px;
+				box-shadow: 2px 2px 2px gold, 2px 2px 2px white inset;
+				color: #550;
+				opacity: 0.4;
+			}
+			p {
+				height: 70px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Babble</h1>
+		<p>
+			Try to generate sentences that have all the letters in them!
+		</p>
+		<div id="generated"></div>
+		<script src="../babble.js"></script>
+		<script>
+			var $gen = document.getElementById("generated");
+			var $prev;
+			var most_letters_yet = 0;
+			var best_score = 0;
+			setInterval(function(){
+				var $p = document.createElement("p"); $gen.appendChild($p); //$gen.insertBefore($p, $prev);
+				var $stats = document.createElement("div"); $p.appendChild($stats);
+				var $output = document.createElement("output"); $p.appendChild($output);
+				
+				var sentence = babble.sentence();
+				
+				$output.innerHTML = sentence;
+				
+				var letters = 0;
+				var score = 0;
+				for(var i=0; i<26; i++){
+					var c = String.fromCharCode(i + "a".charCodeAt(0));
+					var $span = document.createElement("span");
+					$span.innerText = $span.textContent = c;
+					if(sentence.indexOf(c) === -1){
+						$span.className = "not-found";
+					}else{
+						$span.className = "found";
+						letters++;
+					}
+					$stats.appendChild($span);
+				}
+				score = letters * 2 + letters / sentence.length;
+				
+				var $totals = document.createElement("span");
+				$stats.appendChild($totals);
+				$totals.className = "totals";
+				$totals.innerText = $totals.textContent = " ("+letters+" / "+sentence.length+")";
+				
+				var $awards = document.createElement("span");
+				$awards.className = "awards";
+				$stats.appendChild($awards);
+				
+				if($prev && !$prev.set_best){
+					$prev.parentElement.removeChild($prev);
+				}
+				
+				$p.set_best = false;
+				$p.same_as_best = (letters == most_letters_yet) || (score == best_score);
+				if(letters > most_letters_yet){
+					most_letters_yet = letters;
+					$p.set_best = true;
+					var $award = document.createElement("span");
+					$award.className = "award";
+					$award.innerHTML = " Most letters: "+letters+"/26";
+					$awards.appendChild($award);
+				}
+				if(score > best_score){
+					best_score = score;
+					$p.set_best = true;
+					var $award = document.createElement("span");
+					$award.className = "award";
+					$award.innerHTML = " Best score: "+(score*100).toFixed(4);
+					$awards.appendChild($award);
+				}
+				if(!$p.set_best){
+					var $no_award = document.createElement("span");
+					$no_award.className = "no-award";
+					$no_award.innerHTML = $p.same_as_best ? "(meh)" : "(lamesauce)";
+					$awards.appendChild($no_award);
+				}
+				
+				$prev = $p;
+			}, 10);
+		</script>
+	</body>
+</html>

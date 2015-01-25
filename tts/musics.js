@@ -3,8 +3,8 @@ Musics = function() {
 	//Todo: error hamdling.
 	var $this = this;
 	this.x = 0;
-	//Todo: support other browsers.
-	this.context = new webkitAudioContext();
+	
+	this.context = new AudioContext();
 	
 	this.sampleRate = this.context.sampleRate;
 	this.frequency = 440;
