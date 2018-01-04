@@ -3,8 +3,7 @@ Musics = function() {
 	//Todo: error hamdling.
 	var $this = this;
 	this.x = 0;
-	//Todo: support other browsers.
-	this.context = new webkitAudioContext();
+	this.context = new AudioContext();
 	
 	this.sampleRate = this.context.sampleRate;
 	this.frequency = 440;
@@ -26,6 +25,11 @@ Musics = function() {
 	this.node.onaudioprocess = function(e) { $this.process(e) };
 };
 
+// wow this is terrible
+// why is it using a script processor when it's just doing sine waves?
+// why is it drawing on the canvas from onaudioprocess?
+// the answer of course, is either I didn't know any better or I just didn't bother really
+// (maybe I was planning on doing more interesting sound generation?)
 Musics.prototype.process = function(e) {
     var data = e.outputBuffer.getChannelData(0);
     var nlast = 0;
